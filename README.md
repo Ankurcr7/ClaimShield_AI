@@ -29,7 +29,7 @@ For example:
 | Claim   | Fraud Probability | Risk Score | Prediction           | Recommended Action |
 | ------- | ----------------: | ---------: | -------------------- | ------------------ |
 | Claim A |              0.12 |         12 | Genuine              | APPROVE            |
-| Claim B |              0.55 |         55 | Depends on threshold | UNDER REVIEW       |
+| Claim B |              0.55 |         55 | Depends on threshold | REVIEW             |
 | Claim C |              0.88 |         88 | Fraudulent           | INVESTIGATE        |
 
 This allows investigators to focus their attention on claims that require further investigation.
