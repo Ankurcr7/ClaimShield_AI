@@ -1308,6 +1308,649 @@ This separation is important because the goal is to estimate fraud risk using in
 
 ---
 
+# 🌐 Deployment with Streamlit
+
+After completing the data analysis, feature engineering, model training, evaluation, and final model selection, we deployed **ClaimShield AI** as an interactive web application using **Streamlit**.
+
+The purpose of deployment was to make the trained machine learning model easier to use for non-technical users such as insurance analysts, investigators, and business teams.
+
+Instead of running Python code manually, users can interact with the system through a web-based dashboard.
+
+## 🛠️ Why Streamlit?
+
+We chose Streamlit because it allows us to quickly convert a Python machine learning project into an interactive web application.
+
+Streamlit was used because it provides:
+
+* Simple Python-based web development
+* Easy integration with machine learning models
+* Interactive input forms
+* Data visualization support
+* Dashboard components and metrics
+* CSV download functionality
+* Fast deployment capabilities
+
+The deployed application uses the trained ClaimShield AI model and saved artifacts to provide fraud risk analysis through a user-friendly interface.
+
+---
+
+# 🏗️ Deployment Architecture
+
+The deployed system follows this workflow:
+
+```text
+                    ┌─────────────────────┐
+                    │    User Interface   │
+                    │     Streamlit App   │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │   Claim Information │
+                    │       Input         │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │ Feature Engineering │
+                    │                     │
+                    │ • Claim Ratios      │
+                    │ • Risk Indicators   │
+                    │ • Customer Flags    │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │  Trained XGBoost    │
+                    │       Model         │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │ Fraud Probability   │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │ Saved Decision      │
+                    │ Threshold           │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+              ┌──────────────────────────────┐
+              │ Business Intelligence Output │
+              │                              │
+              │ • Fraud Prediction           │
+              │ • Risk Level                 │
+              │ • Recommended Action         │
+              │ • Financial Exposure         │
+              └──────────────────────────────┘
+```
+
+---
+
+# 📁 Deployment Files
+
+The Streamlit application uses the following files:
+
+```text
+ClaimShield-AI/
+│
+├── app.py
+│
+├── ClaimShieldAI_FIXED.ipynb
+├── ClaimShieldAI-Dataset.csv
+├── evaluation_dataset.csv
+│
+├── ClaimShield_AI_Evaluation_Results.csv
+│
+├── claimshield_final_xgboost.pkl
+├── claimshield_threshold.pkl
+├── claimshield_features.pkl
+│
+├── requirements.txt
+│
+└── README.md
+```
+
+## Important Files
+
+### `app.py`
+
+Contains the complete Streamlit application, including:
+
+* Dashboard interface
+* New claim analysis
+* Portfolio analytics
+* Investigation queue
+* Individual claim explorer
+* Model information
+
+### `claimshield_final_xgboost.pkl`
+
+Contains the trained final XGBoost model pipeline.
+
+The application loads this model to predict fraud probabilities for new insurance claims.
+
+### `claimshield_threshold.pkl`
+
+Stores the optimized fraud decision threshold.
+
+This allows the deployed application to use the same classification logic selected during model development.
+
+### `claimshield_features.pkl`
+
+Stores the expected model input features.
+
+This ensures that new claim data is aligned with the features used during training.
+
+### `ClaimShield_AI_Evaluation_Results.csv`
+
+Contains the evaluated claim portfolio and prediction results used by the dashboard for analytics, visualizations, and investigation prioritization.
+
+### `evaluation_dataset.csv`
+
+Contains the original evaluation data used alongside the generated prediction results.
+
+---
+
+# 🚀 Running the Streamlit Application Locally
+
+## 1. Clone the Repository
+
+```bash
+git clone <your-repository-url>
+cd ClaimShield-AI
+```
+
+## 2. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+Or install the required packages manually:
+
+```bash
+pip install streamlit pandas numpy scikit-learn xgboost plotly
+```
+
+## 3. Run the Application
+
+```bash
+streamlit run app.py
+```
+
+After running the command, Streamlit will start a local server.
+
+Open the application in your browser using the local URL displayed in the terminal, typically:
+
+```text
+http://localhost:8501
+```
+
+---
+
+# 🖥️ Application Features
+
+The deployed ClaimShield AI application contains six main modules.
+
+## 1. 🏠 Executive Dashboard
+
+The Executive Dashboard provides a high-level overview of the insurance claim portfolio.
+
+It displays:
+
+* Total claims analyzed
+* Fraudulent claims
+* Genuine claims
+* Fraud rate
+* Average fraud probability
+* Potential financial exposure
+* Claims requiring review
+* Critical-risk claims
+
+It also includes visualizations such as:
+
+* Fraud detection distribution
+* Highest financial exposure claims
+
+This page is designed for quick business-level decision-making.
+
+---
+
+## 2. 🔍 Analyze New Claim
+
+Users can enter information for a new insurance claim, including:
+
+* Customer age
+* Gender
+* Region
+* Policy type
+* Premium amount
+* Coverage amount
+* Claim amount
+* Claim type
+* Credit score
+
+The application automatically creates the required engineered features.
+
+### Example
+
+If a user enters:
+
+```text
+Age: 35
+Premium Amount: ₹5,000
+Coverage Amount: ₹100,000
+Claim Amount: ₹75,000
+Credit Score: 600
+```
+
+The application can generate features such as:
+
+```text
+Claim / Coverage Ratio = 0.75
+Claim / Premium Ratio = 15
+Remaining Coverage = ₹25,000
+```
+
+The processed data is then passed to the trained XGBoost model.
+
+The application returns:
+
+```text
+Fraud Probability
+AI Prediction
+Risk Level
+Potential Financial Exposure
+Recommended Action
+```
+
+---
+
+# 🧮 Feature Engineering in the Application
+
+The Streamlit application performs the same feature engineering logic used for model development.
+
+```python
+Claim_Coverage_Ratio = Claim_Amount / Coverage_Amount
+```
+
+```python
+Claim_Premium_Ratio = Claim_Amount / Premium_Amount
+```
+
+```python
+Coverage_Premium_Ratio = Coverage_Amount / Premium_Amount
+```
+
+```python
+Remaining_Coverage = Coverage_Amount - Claim_Amount
+```
+
+It also creates risk indicators:
+
+```text
+Young Customer
+Senior Customer
+Low Credit Score
+High Claim
+```
+
+This consistency is important because the deployed model must receive data in the same structure and feature format used during training.
+
+---
+
+# 📊 Risk Classification
+
+The application converts the fraud probability into understandable business categories.
+
+The Streamlit application uses the saved model threshold together with predefined risk ranges.
+
+```text
+Low Risk
+   ↓
+Medium Risk
+   ↓
+High Risk
+   ↓
+Critical Risk
+```
+
+The exact high-risk classification uses the optimized threshold saved during model development.
+
+### Example
+
+```text
+Fraud Probability: 18%
+→ Low Risk
+→ Process Normally
+```
+
+```text
+Fraud Probability: 55%
+→ Medium Risk
+→ Additional Verification
+```
+
+```text
+Fraud Probability: Above Model Threshold
+→ High Risk
+→ Review Claim
+```
+
+```text
+Fraud Probability: 80% or Higher
+→ Critical Risk
+→ Escalate for Immediate Investigation
+```
+
+---
+
+# 🎯 Recommended Business Actions
+
+The application converts AI predictions into business actions.
+
+| Risk Level | Recommended Action                   |
+| ---------- | ------------------------------------ |
+| Low        | Process Normally                     |
+| Medium     | Additional Verification              |
+| High       | Review Claim                         |
+| Critical   | Escalate for Immediate Investigation |
+
+This makes ClaimShield AI a decision-support application rather than just a machine learning prediction system.
+
+---
+
+# 📈 Portfolio Analytics
+
+The Portfolio Analytics page allows users to explore patterns across the evaluated claim portfolio.
+
+Users can filter the data by:
+
+* Region
+* Policy Type
+
+The application provides interactive visualizations for:
+
+* Fraud prediction by region
+* Average fraud probability by policy type
+* Claim amount vs fraud probability
+* Potential financial exposure by claim type
+* Fraud probability distribution
+
+The dashboard also displays the model decision threshold on the fraud probability distribution.
+
+---
+
+# 🚨 Investigation Queue
+
+The Investigation Queue helps fraud analysts prioritize claims.
+
+Users can select a minimum fraud probability, and the application filters claims accordingly.
+
+The claims are prioritized based on:
+
+1. Fraud probability
+2. Potential financial loss
+
+The queue includes information such as:
+
+```text
+Claim ID
+Customer ID
+Region
+Policy Type
+Claim Type
+Claim Amount
+Fraud Probability
+Fraud Prediction
+Recommended Action
+Potential Financial Loss
+```
+
+Users can also download the investigation queue as a CSV file.
+
+This allows the investigation team to use the AI-generated prioritization in their workflow.
+
+---
+
+# 📄 Individual Claim Explorer
+
+The Claim Explorer allows users to select an individual claim and view its complete risk profile.
+
+The application displays:
+
+### Customer Information
+
+* Customer ID
+* Age
+* Gender
+* Credit score
+* Region
+
+### Policy Information
+
+* Policy number
+* Policy type
+* Premium amount
+* Coverage amount
+* Remaining coverage
+
+### Risk Information
+
+* Fraud probability
+* Fraud prediction
+* Recommended action
+* Potential financial loss
+* Claim-to-coverage ratio
+* Claim-to-premium ratio
+* Low-credit-score flag
+* High-claim flag
+
+This provides a more detailed view of individual claims for investigators.
+
+---
+
+# 🤖 Model Information Page
+
+The application also includes a dedicated page explaining the machine learning system.
+
+It displays:
+
+* Model name: XGBoost
+* Optimized decision threshold
+* Number of input features
+* Feature names
+* Prediction pipeline
+
+The application workflow is shown as:
+
+```text
+Claim Data Input
+        ↓
+Data Preparation
+        ↓
+Feature Engineering
+        ↓
+XGBoost Fraud Model
+        ↓
+Fraud Probability
+        ↓
+Optimized Threshold
+        ↓
+Fraud / Genuine Prediction
+        ↓
+Recommended Business Action
+```
+
+---
+
+# ⚠️ Model Compatibility Note
+
+The Streamlit application attempts to load the saved XGBoost model for new claim predictions.
+
+If the model artifact cannot be loaded because of differences between the training and deployment environments, the application displays a warning and uses a demonstration risk calculation.
+
+For production deployment, the recommended approach is to ensure that the deployment environment uses compatible versions of:
+
+```text
+Python
+Scikit-learn
+XGBoost
+NumPy
+Pandas
+```
+
+This ensures that the saved model artifact can be loaded successfully and that live predictions are generated directly by the trained model.
+
+---
+
+# 📦 Example `requirements.txt`
+
+Create a `requirements.txt` file containing the project dependencies:
+
+```text
+streamlit
+pandas
+numpy
+scikit-learn
+xgboost
+plotly
+```
+
+You may also include the exact package versions used during development to ensure compatibility between training and deployment.
+
+Example:
+
+```text
+streamlit==1.x.x
+pandas==2.x.x
+numpy==1.x.x
+scikit-learn==1.x.x
+xgboost==2.x.x
+plotly==5.x.x
+```
+
+> Replace the versions above with the actual versions used in your project environment before deployment.
+
+---
+
+# ☁️ Deploying to Streamlit Community Cloud
+
+The application can be deployed online using Streamlit Community Cloud.
+
+## Step 1: Push the Project to GitHub
+
+Ensure the repository contains:
+
+```text
+app.py
+requirements.txt
+claimshield_final_xgboost.pkl
+claimshield_threshold.pkl
+claimshield_features.pkl
+ClaimShield_AI_Evaluation_Results.csv
+evaluation_dataset.csv
+```
+
+## Step 2: Connect the GitHub Repository
+
+Log in to Streamlit Community Cloud and connect your GitHub account.
+
+## Step 3: Select the Repository
+
+Choose:
+
+```text
+Repository: Your GitHub Repository
+Branch: main
+Main file path: app.py
+```
+
+## Step 4: Deploy
+
+Click the deploy button.
+
+Streamlit will install the dependencies listed in `requirements.txt` and run:
+
+```bash
+streamlit run app.py
+```
+
+After successful deployment, the application will be available through a public web URL.
+
+> Live Application: https://claimshieldai.streamlit.app
+
+---
+
+# 🔮 Future Deployment Improvements
+
+Future versions of ClaimShield AI can include:
+
+* REST API deployment using FastAPI or Django
+* PostgreSQL or MongoDB database integration
+* User authentication
+* Role-based access for investigators and administrators
+* Real-time claim prediction
+* Individual SHAP explanations
+* Cloud model storage
+* Automated model retraining
+* Model monitoring and data drift detection
+* Investigation feedback loop
+* Email or dashboard alerts for critical-risk claims
+
+---
+
+# 🏁 Final Project Workflow
+
+The complete ClaimShield AI project follows this end-to-end workflow:
+
+```text
+Insurance Claim Dataset
+        ↓
+Data Understanding
+        ↓
+Data Cleaning
+        ↓
+Exploratory Data Analysis
+        ↓
+Leakage Detection
+        ↓
+Feature Engineering
+        ↓
+Data Preprocessing
+        ↓
+Random Forest Baseline
+        ↓
+XGBoost Model
+        ↓
+Cross-Validation
+        ↓
+Hyperparameter Tuning
+        ↓
+Model Evaluation
+        ↓
+Threshold Optimization
+        ↓
+Explainability & Feature Analysis
+        ↓
+Save Final Model
+        ↓
+Streamlit Application
+        ↓
+Interactive Fraud Risk Analysis
+        ↓
+Portfolio Analytics
+        ↓
+Investigation Prioritization
+        ↓
+Business Decision Support
+```
+
+---
+
 # ⚠️ Current Limitations
 
 This project is a machine learning prototype and decision-support system.
@@ -1320,24 +1963,6 @@ Some limitations include:
 * High-risk predictions should be reviewed by authorized investigators.
 * Data distributions can change over time, requiring model monitoring and retraining.
 * The leakage diagnostic suggests that some legacy columns may be too closely connected to the target and therefore unsuitable for a realistic production model.
-
----
-
-# 🔮 Future Improvements
-
-Possible future enhancements include:
-
-* Real-time fraud detection API using Flask or Django.
-* Interactive web dashboard.
-* Database integration.
-* User authentication and investigator roles.
-* Individual claim-level SHAP explanations.
-* Model monitoring and drift detection.
-* Automated retraining pipeline.
-* Feedback loop from investigator decisions.
-* Cloud deployment.
-* Alert system for critical claims.
-* Cost-sensitive threshold optimization based on actual investigation costs and fraud losses.
 
 ---
 
@@ -1371,16 +1996,6 @@ The final result is an **intelligent fraud risk assessment workflow** that can h
 
 ---
 
-# 👥 Team
-
-**Team Name: HexaRisk**
-
-Project: **ClaimShield AI — Intelligent Insurance Fraud Detection Platform**
-
-Team Size: **6 Members**
-
----
-
 ## ⭐ Conclusion
 
 ClaimShield AI was built not only to predict fraud but to create a practical decision-support workflow for insurance claims.
@@ -1407,4 +2022,16 @@ Potential Financial Loss
 Investigator Prioritization
 ```
 
-**ClaimShield AI: Detect smarter. Investigate faster. Protect better. 🛡️**
+---
+
+### 🛡️ ClaimShield AI
+
+**Team Name: HexaRisk**
+
+Project: **ClaimShield AI — Intelligent Insurance Fraud Detection Platform**
+
+Team Size: **6 Members**
+
+**From raw insurance claim data to an intelligent, interactive fraud risk assessment platform.**
+
+**- Built by Team HexaRisk.**
