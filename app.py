@@ -53,21 +53,24 @@ st.markdown("""
 }
 
 .risk-high {
-    background-color: #fee2e2;
+    color: white;
+    background-color: #7F0000;
     padding: 20px;
     border-radius: 12px;
     border-left: 6px solid #dc2626;
 }
 
 .risk-medium {
-    background-color: #fef3c7;
+    color: white;
+    background-color: #E88504;
     padding: 20px;
     border-radius: 12px;
     border-left: 6px solid #d97706;
 }
 
 .risk-low {
-    background-color: #dcfce7;
+    color: white;
+    background-color: #043927;
     padding: 20px;
     border-radius: 12px;
     border-left: 6px solid #16a34a;
@@ -296,9 +299,9 @@ if page == "🏠 Executive Dashboard":
     )
 
 
-    # -----------------------------
+    
     # KPI SECTION
-    # -----------------------------
+    
 
     col1, col2, col3, col4 = st.columns(4)
 
@@ -327,9 +330,9 @@ if page == "🏠 Executive Dashboard":
     st.divider()
 
 
-    # -----------------------------
+    
     # SECONDARY METRICS
-    # -----------------------------
+    
 
     col1, col2, col3 = st.columns(3)
 
@@ -360,9 +363,9 @@ if page == "🏠 Executive Dashboard":
     st.divider()
 
 
-    # -----------------------------
+    
     # EXECUTIVE INSIGHTS
-    # -----------------------------
+    
 
     st.subheader("📌 Executive Risk Summary")
 
@@ -423,9 +426,9 @@ if page == "🏠 Executive Dashboard":
         )
 
 
-    # -----------------------------
+    
     # BUSINESS INTERPRETATION
-    # -----------------------------
+    
 
     st.subheader("🧠 What This Means for the Business")
 
@@ -476,9 +479,9 @@ elif page == "🔍 Analyze New Claim":
     st.divider()
 
 
-    # -----------------------------
+    
     # CUSTOMER DETAILS
-    # -----------------------------
+    
 
     st.subheader("👤 Customer Information")
 
@@ -505,9 +508,9 @@ elif page == "🔍 Analyze New Claim":
         )
 
 
-    # -----------------------------
+    
     # POLICY DETAILS
-    # -----------------------------
+    
 
     st.subheader("📋 Policy Information")
 
@@ -534,9 +537,9 @@ elif page == "🔍 Analyze New Claim":
         )
 
 
-    # -----------------------------
+    
     # CLAIM DETAILS
-    # -----------------------------
+    
 
     st.subheader("📄 Claim Information")
 
@@ -588,13 +591,13 @@ elif page == "🔍 Analyze New Claim":
         st.session_state["input_df"] = input_df
 
 
-        # -------------------------------------------------
+        
         # MODEL PREDICTION
-        # -------------------------------------------------
+        # ----------------
         # The prediction code below uses the saved model.
         # If your environment has the same dependency
         # versions used to train the model, uncomment it.
-        # -------------------------------------------------
+       
 
         try:
 
@@ -655,9 +658,9 @@ elif page == "🔍 Analyze New Claim":
         )
 
 
-        # -----------------------------
+        
         # RESULTS
-        # -----------------------------
+        
 
         st.success(
             "Claim analysis completed successfully."
@@ -692,9 +695,9 @@ elif page == "🔍 Analyze New Claim":
         )
 
 
-        # -----------------------------
+        
         # RISK MESSAGE
-        # -----------------------------
+        
 
         if risk_level == "Critical":
 
@@ -763,9 +766,9 @@ elif page == "🔍 Analyze New Claim":
             )
 
 
-        # -----------------------------
+        
         # FEATURE ANALYSIS
-        # -----------------------------
+        
 
         st.subheader(
             "📊 Claim Risk Indicators"
@@ -825,9 +828,9 @@ elif page == "📊 Portfolio Analytics":
     )
 
 
-    # -----------------------------
+    
     # FILTERS
-    # -----------------------------
+    
 
     st.sidebar.markdown(
         "### Portfolio Filters"
@@ -852,9 +855,9 @@ elif page == "📊 Portfolio Analytics":
     ]
 
 
-    # -----------------------------
+    
     # FRAUD BY REGION
-    # -----------------------------
+    
 
     col1, col2 = st.columns(2)
 
@@ -882,9 +885,9 @@ elif page == "📊 Portfolio Analytics":
         )
 
 
-    # -----------------------------
+    
     # POLICY TYPE
-    # -----------------------------
+    
 
     with col2:
 
@@ -913,9 +916,9 @@ elif page == "📊 Portfolio Analytics":
         )
 
 
-    # -----------------------------
+    
     # CLAIM AMOUNT VS RISK
-    # -----------------------------
+    
 
     col1, col2 = st.columns(2)
 
@@ -940,9 +943,9 @@ elif page == "📊 Portfolio Analytics":
         )
 
 
-    # -----------------------------
+    
     # FINANCIAL EXPOSURE
-    # -----------------------------
+    
 
     with col2:
 
@@ -971,9 +974,9 @@ elif page == "📊 Portfolio Analytics":
         )
 
 
-    # -----------------------------
+    
     # DISTRIBUTION
-    # -----------------------------
+    
 
     st.subheader(
         "Fraud Probability Distribution"
@@ -1102,9 +1105,9 @@ elif page == "📄 Claim Explorer":
     ].iloc[0]
 
 
-    # -----------------------------
+    
     # CLAIM SUMMARY
-    # -----------------------------
+    
 
     st.subheader(
         f"Claim Profile: {selected_claim}"
@@ -1133,9 +1136,9 @@ elif page == "📄 Claim Explorer":
     )
 
 
-    # -----------------------------
+    
     # CUSTOMER DETAILS
-    # -----------------------------
+    
 
     st.subheader(
         "👤 Customer & Policy Information"
@@ -1195,9 +1198,9 @@ elif page == "📄 Claim Explorer":
         )
 
 
-    # -----------------------------
+    
     # RISK BREAKDOWN
-    # -----------------------------
+    
 
     st.subheader(
         "⚠️ Risk Indicator Breakdown"
